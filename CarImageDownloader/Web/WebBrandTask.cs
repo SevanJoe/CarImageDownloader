@@ -36,15 +36,24 @@ namespace CarImageDownloader.Web
             mCarBrand.ListUrl = brandListNode.SelectSingleNode(WebConstants.SCRIPT_SRC).Attributes[WebConstants.SRC].Value;
             htmlDocument = htmlWeb.Load(WebConstants.BASE_URL + mCarBrand.ListUrl);
             HtmlNodeCollection factoryNodes = htmlDocument.DocumentNode.SelectNodes(WebConstants.FACTORY_NODE);
-            foreach (HtmlNode tempNode in factoryNodes)
+            if (factoryNodes != null)
             {
-                HtmlNode factoryNode = HtmlNode.CreateNode(tempNode.OuterHtml);
-                CarFactory carFactory = new CarFactory(mCarBrand);
-                carFactory.Url = factoryNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
-                carFactory.Name = factoryNode.InnerText;
-                mCarBrand.CarFactoryList.Add(carFactory);
+                foreach (HtmlNode tempNode in factoryNodes)
+                {
+                    HtmlNode factoryNode = HtmlNode.CreateNode(tempNode.OuterHtml);
+                    CarFactory carFactory = new CarFactory(mCarBrand);
+                    carFactory.Url = factoryNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
+                    carFactory.Name = factoryNode.InnerText;
+                    mCarBrand.CarFactoryList.Add(carFactory);
+                }
             }
 
+            runFactoryTasks();
+        }
+
+        private void runFactoryTasks()
+        {
+            new WebFactoryTask(mCarBrand.CarFactoryList[0]).Run();
         }
     }
 }

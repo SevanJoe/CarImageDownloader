@@ -52,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\WebBrandTask.cs" />
     <Compile Include="Web\WebConstants.cs" />
+    <Compile Include="Web\WebFactoryTask.cs" />
     <Compile Include="Web\WebTask.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,10 +13,12 @@ namespace CarImageDownloader.CarData
         public string Name { get; set; }
         public string LogoUrl { get; set; }
         public string OfficialSite { get; set; }
+        public List<CarType> CarTypeList { get; set; }
 
         public CarFactory(CarBrand carBrand)
         {
             CarBrand = carBrand;
+            CarTypeList = new List<CarType>();
         }
     }
 }
