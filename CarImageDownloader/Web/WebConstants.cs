@@ -8,8 +8,6 @@ namespace CarImageDownloader.Web
 {
     class WebConstants
     {
-        public const string FILE_BASE_PATH = @"..\..\..\Images\";
-
         public const string BASE_URL = "http://data.auto.ifeng.com/";
         public const string PHOTO_URL = "frag/priceInc/photo_1.inc";
 

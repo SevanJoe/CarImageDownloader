@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 
 using CarImageDownloader.CarData;
+using CarImageDownloader.Image;
 
 namespace CarImageDownloader.Web
 {
@@ -26,6 +27,8 @@ namespace CarImageDownloader.Web
             HtmlDocument htmlDocument = htmlWeb.Load(WebConstants.BASE_URL + mCarBrand.Url);
             HtmlNode logoNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LOGO).OuterHtml);
             mCarBrand.LogoUrl = logoNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
+            new BrandLogoDownloadTask(mCarBrand).Download();
+
             HtmlNode officialSiteNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_OFFICIAL_SITE).OuterHtml);
             mCarBrand.OfficialSite = officialSiteNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
             HtmlNode countryNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_COUNTRY).OuterHtml);

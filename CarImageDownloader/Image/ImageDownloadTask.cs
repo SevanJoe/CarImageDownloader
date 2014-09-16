@@ -10,8 +10,22 @@ namespace CarImageDownloader.Image
 {
     abstract class ImageDownloadTask
     {
-        private string mFileName;
-        private string mUrl;
+        protected const string BASE_FILE_PATH = @"..\..\..\Images\";
+        protected const string IMAGE_POSTFIX = ".png";
+
+        protected string mFilePath;
+        protected string mFileName;
+        protected string mUrl;
+
+        protected void initFile()
+        {
+            Directory.CreateDirectory(mFilePath);
+
+            if (!File.Exists(mFileName))
+            {
+                File.Create(mFileName).Close();
+            }
+        }
 
         public void Download()
         {
