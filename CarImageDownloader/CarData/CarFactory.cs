@@ -9,6 +9,7 @@ namespace CarImageDownloader.CarData
     class CarFactory
     {
         public CarBrand CarBrand { get; set; }
+        public string Url { get; set; }
         public string Name { get; set; }
         public string LogoUrl { get; set; }
         public string OfficialSite { get; set; }

@@ -22,7 +22,7 @@ namespace CarImageDownloader.Web
 
         public void Run()
         {
-            HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + WebConstants.PHOTO);
+            HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + WebConstants.PHOTO_URL);
             HtmlNodeCollection brandNodes = htmlDocument.DocumentNode.SelectNodes(WebConstants.BRAND_NODE);
             if (brandNodes != null)
             {
