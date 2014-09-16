@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using HtmlAgilityPack;
@@ -35,8 +36,6 @@ namespace CarImageDownloader.Web
                     string brandName = brandNode.InnerText;
                     brandName = brandName.Substring(1, brandName.Length - brandNamePostFix.Length - 1);
 
-                    Console.WriteLine(brandAlpha + ": " + brandName);
-
                     CarBrand carBrand = new CarBrand(brandUrl);
                     carBrand.Alpha = brandAlpha;
                     carBrand.Name = brandName;
@@ -49,7 +48,10 @@ namespace CarImageDownloader.Web
 
         private void runBrandTasks()
         {
-            new WebBrandTask(mCarBrandList[1]).Run();
+            foreach (CarBrand carBrand in mCarBrandList)
+            {
+                new Thread(new WebBrandTask(carBrand).Run).Start();
+            }
         }
     }
 }

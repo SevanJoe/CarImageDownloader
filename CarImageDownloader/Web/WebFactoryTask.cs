@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using HtmlAgilityPack;
@@ -25,7 +26,7 @@ namespace CarImageDownloader.Web
             HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + mCarFactory.Url);
             HtmlNode logoNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LOGO).OuterHtml);
             mCarFactory.LogoUrl = logoNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
-            new FactoryLogoDownloadTask(mCarFactory).Download();
+            new Thread(new FactoryLogoDownloadTask(mCarFactory).Download).Start();
 
             HtmlNode officialSiteNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_OFFICIAL_SITE).OuterHtml);
             mCarFactory.OfficialSite = officialSiteNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
@@ -41,7 +42,7 @@ namespace CarImageDownloader.Web
                     carType.Name = nameNode.SelectSingleNode(WebConstants.LINK_HREF).InnerText;
                     HtmlNode imageNode = HtmlNode.CreateNode(typeNode.SelectSingleNode(WebConstants.TYPE_IMAGE).OuterHtml);
                     carType.ImageUrl = imageNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
-                    new TypeImageDownloadTask(carType).Download();
+                    new Thread(new TypeImageDownloadTask(carType).Download).Start();
 
                     mCarFactory.CarTypeList.Add(carType);
                 }

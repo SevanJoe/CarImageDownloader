@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using HtmlAgilityPack;
@@ -27,14 +28,14 @@ namespace CarImageDownloader.Web
             HtmlDocument htmlDocument = htmlWeb.Load(WebConstants.BASE_URL + mCarBrand.Url);
             HtmlNode logoNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LOGO).OuterHtml);
             mCarBrand.LogoUrl = logoNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
-            new BrandLogoDownloadTask(mCarBrand).Download();
+            new Thread(new BrandLogoDownloadTask(mCarBrand).Download).Start();
 
             HtmlNode officialSiteNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_OFFICIAL_SITE).OuterHtml);
             mCarBrand.OfficialSite = officialSiteNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
             HtmlNode countryNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_COUNTRY).OuterHtml);
             mCarBrand.Country = new Country(countryNode.InnerText.Substring(countryNode.SelectSingleNode(WebConstants.EM).InnerText.Length));
             mCarBrand.Country.LogoUrl = countryNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
-            new CountryLogoDownloadTask(mCarBrand.Country).Download();
+            new Thread(new CountryLogoDownloadTask(mCarBrand.Country).Download).Start();
 
             HtmlNode brandListNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LIST).OuterHtml);
             mCarBrand.ListUrl = brandListNode.SelectSingleNode(WebConstants.SCRIPT_SRC).Attributes[WebConstants.SRC].Value;
@@ -47,7 +48,7 @@ namespace CarImageDownloader.Web
                     HtmlNode factoryNode = HtmlNode.CreateNode(tempNode.OuterHtml);
                     CarFactory carFactory = new CarFactory(mCarBrand);
                     carFactory.Url = factoryNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
-                    carFactory.Name = factoryNode.InnerText;
+                    carFactory.Name = factoryNode.InnerText.Replace("/", "");
                     mCarBrand.CarFactoryList.Add(carFactory);
                 }
             }
@@ -57,7 +58,10 @@ namespace CarImageDownloader.Web
 
         private void runFactoryTasks()
         {
-            new WebFactoryTask(mCarBrand.CarFactoryList[0]).Run();
+            foreach (CarFactory carFactory in mCarBrand.CarFactoryList)
+            {
+                new Thread(new WebFactoryTask(carFactory).Run).Start();
+            }
         }
     }
 }

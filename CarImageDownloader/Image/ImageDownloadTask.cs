@@ -24,7 +24,7 @@ namespace CarImageDownloader.Image
 
         public void Download()
         {
-            if (!File.Exists(mFileName))
+            if (!File.Exists(mFileName) && mUrl.Length > 0)
             {
                 File.Create(mFileName).Close();
 
