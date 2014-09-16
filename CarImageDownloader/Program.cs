@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using CarImageDownloader.Excel;
 using CarImageDownloader.Web;
 
 namespace CarImageDownloader
@@ -12,7 +13,8 @@ namespace CarImageDownloader
     {
         static void Main(string[] args)
         {
-            new WebTask().Run();
+            //new WebTask().Run();
+            new ExcelTask();
         }
     }
 }
