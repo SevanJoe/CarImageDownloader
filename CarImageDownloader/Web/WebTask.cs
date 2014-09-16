@@ -29,7 +29,7 @@ namespace CarImageDownloader.Web
                 foreach (HtmlNode tempNode in brandNodes)
                 {
                     HtmlNode brandNode = HtmlNode.CreateNode(tempNode.OuterHtml);
-                    string brandUrl = brandNode.SelectSingleNode(WebConstants.IMAGE_HREF).Attributes[WebConstants.HREF].Value;
+                    string brandUrl = brandNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
                     char brandAlpha = brandNode.SelectSingleNode(WebConstants.BRAND_ALPHA).InnerText.ToCharArray()[0];
                     string brandNamePostFix = brandNode.SelectSingleNode(WebConstants.BRAND_NAME_POSTFIX).InnerText;
                     string brandName = brandNode.InnerText;
@@ -39,10 +39,17 @@ namespace CarImageDownloader.Web
 
                     CarBrand carBrand = new CarBrand(brandUrl);
                     carBrand.Alpha = brandAlpha;
-                    carBrand.BrandName = brandName;
+                    carBrand.Name = brandName;
                     mCarBrandList.Add(carBrand);
                 }
             }
+
+            runBrandTasks();
+        }
+
+        private void runBrandTasks()
+        {
+            new WebBrandTask(mCarBrandList[1]).Run();
         }
     }
 }

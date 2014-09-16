@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace CarImageDownloader.CarData
 {
-    class CarType
+    class Country
     {
-        public CarFactory CarFactory { get; set; }
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string LogoUrl { get; set; }
 
-        public CarType(CarFactory carFactory)
+        public Country(string name)
         {
-            CarFactory = carFactory;
+            Name = name;
         }
     }
 }
