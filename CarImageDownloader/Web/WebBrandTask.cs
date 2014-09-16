@@ -34,6 +34,7 @@ namespace CarImageDownloader.Web
             HtmlNode countryNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_COUNTRY).OuterHtml);
             mCarBrand.Country = new Country(countryNode.InnerText.Substring(countryNode.SelectSingleNode(WebConstants.EM).InnerText.Length));
             mCarBrand.Country.LogoUrl = countryNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
+            new CountryLogoDownloadTask(mCarBrand.Country).Download();
 
             HtmlNode brandListNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LIST).OuterHtml);
             mCarBrand.ListUrl = brandListNode.SelectSingleNode(WebConstants.SCRIPT_SRC).Attributes[WebConstants.SRC].Value;
