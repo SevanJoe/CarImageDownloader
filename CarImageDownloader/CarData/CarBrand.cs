@@ -13,6 +13,7 @@ namespace CarImageDownloader.CarData
         public char Alpha { get; set; }
         public string Name { get; set; }
         public string LogoUrl { get; set; }
+        public string LogoPath { get; set; }
         public string OfficialSite { get; set; }
         public Country Country { get; set; }
         public List<CarFactory> CarFactoryList { get; set; }

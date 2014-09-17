@@ -15,6 +15,7 @@ namespace CarImageDownloader.Image
         {
             mFilePath = Path.Combine(BASE_FILE_PATH, carType.CarFactory.CarBrand.Name, carType.CarFactory.Name);
             mFileName = Path.Combine(mFilePath, carType.Name + IMAGE_POSTFIX);
+            carType.ImagePath = Path.Combine(Environment.CurrentDirectory, mFileName);
             initFile();
 
             mUrl = carType.ImageUrl;

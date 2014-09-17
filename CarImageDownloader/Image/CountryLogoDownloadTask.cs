@@ -15,6 +15,7 @@ namespace CarImageDownloader.Image
         {
             mFilePath = Path.Combine(BASE_FILE_PATH + "Country");
             mFileName = Path.Combine(mFilePath, country.Name + IMAGE_POSTFIX);
+            country.LogoPath = Path.Combine(Environment.CurrentDirectory, mFileName);
             initFile();
 
             mUrl = country.LogoUrl;

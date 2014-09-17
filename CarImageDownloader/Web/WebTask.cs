@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 
 using CarImageDownloader.CarData;
+using CarImageDownloader.Excel;
 
 namespace CarImageDownloader.Web
 {
@@ -48,10 +49,18 @@ namespace CarImageDownloader.Web
 
         private void runBrandTasks()
         {
+            List<Thread> brandThreadList = new List<Thread>();
             foreach (CarBrand carBrand in mCarBrandList)
             {
-                new Thread(new WebBrandTask(carBrand).Run).Start();
+                Thread brandThread = new Thread(new WebBrandTask(carBrand).Run);
+                brandThreadList.Add(brandThread);
+                brandThread.Start();
             }
+            foreach (Thread brandThread in brandThreadList)
+            {
+                brandThread.Join();
+            }
+            new ExcelTask().WriteCarInfo(mCarBrandList);
         }
     }
 }

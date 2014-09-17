@@ -13,8 +13,7 @@ namespace CarImageDownloader
     {
         static void Main(string[] args)
         {
-            //new WebTask().Run();
-            new ExcelTask();
+            new WebTask().Run();
         }
     }
 }
