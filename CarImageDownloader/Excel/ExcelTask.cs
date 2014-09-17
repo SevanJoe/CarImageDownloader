@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 
 using CarImageDownloader.CarData;
@@ -39,6 +39,7 @@ namespace CarImageDownloader.Excel
                 mWorksheet.Cells[1, i] = ExcelConstants.SHEET_HEADERS[i - 1];
                 mRange = mWorksheet.Cells[1, i];
                 mRange.Font.Bold = true;
+                mRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 mRange.EntireColumn.AutoFit();
             }
         }
@@ -54,67 +55,19 @@ namespace CarImageDownloader.Excel
                     {
                         ++index;
                         
-                        mWorksheet.Cells[index, 1] = carBrand.Alpha;
+                        mWorksheet.Cells[index, 1] = carBrand.Alpha.ToString();
                         mWorksheet.Cells[index, 2] = carBrand.Name;
-
-                        // brand logo
-                        mRange = mWorksheet.Cells[index, 3];
-                        mRange.Select();
-                        if (carBrand.LogoUrl.Length > 0)
-                        {
-                            mWorksheet.Shapes.AddPicture(carBrand.LogoPath, MsoTriState.msoFalse, MsoTriState.msoCTrue, 0, 0,
-                            ExcelConstants.BRAND_LOGO_SIZE, ExcelConstants.BRAND_LOGO_SIZE);
-                        }
-                        else
-                        {
-                            mWorksheet.Cells[index, 3] = ExcelConstants.NO_IMAGE;
-                        }
-
-                        mWorksheet.Cells[index, 4] = carBrand.OfficialSite;
-                        mWorksheet.Cells[index, 5] = carBrand.Country.Name;
-
-                        // country logo
-                        mRange = mWorksheet.Cells[index, 6];
-                        mRange.Select();
-                        mWorksheet.Shapes.AddPicture(carBrand.Country.LogoPath, MsoTriState.msoFalse, MsoTriState.msoCTrue, 0, 0,
-                            ExcelConstants.COUNTRY_LOGO_WIDTH, ExcelConstants.COUNTRY_LOGO_HEIGHT);
-
-                        mWorksheet.Cells[index, 7] = carFactory.Name;
-
-                        // factory logo
-                        mRange = mWorksheet.Cells[index, 8];
-                        if (carFactory.LogoUrl.Length > 0)
-                        {
-                            mWorksheet.Shapes.AddPicture(carFactory.LogoPath, MsoTriState.msoFalse, MsoTriState.msoCTrue, 0, 0,
-                            ExcelConstants.BRAND_LOGO_SIZE, ExcelConstants.BRAND_LOGO_SIZE);
-                        }
-                        else
-                        {
-                            mWorksheet.Cells[index, 8] = ExcelConstants.NO_IMAGE;
-                        }
-
-                        mWorksheet.Cells[index, 9] = carFactory.OfficialSite;
-                        mWorksheet.Cells[index, 10] = carType.Name;
-
-                        // car image
-                        mRange = mWorksheet.Cells[index, 11];
-                        if (carType.ImageUrl.Length > 0)
-                        {
-                            mWorksheet.Shapes.AddPicture(carType.ImagePath, MsoTriState.msoFalse, MsoTriState.msoCTrue, 0, 0,
-                            ExcelConstants.CAR_IMAGE_WIDTH, ExcelConstants.CAR_IMAGE_HEIGHT);
-                        }
-                        else
-                        {
-                            mWorksheet.Cells[index, 11] = ExcelConstants.NO_IMAGE;
-                        }
+                        mWorksheet.Cells[index, 3] = carBrand.OfficialSite;
+                        mWorksheet.Cells[index, 4] = carBrand.Country.Name;
+                        mWorksheet.Cells[index, 5] = carFactory.Name;
+                        mWorksheet.Cells[index, 6] = carFactory.OfficialSite;
+                        mWorksheet.Cells[index, 7] = carType.Name;
 
                         for (int i = 1; i <= ExcelConstants.SHEET_HEADERS.Length; ++i)
                         {
                             mRange = mWorksheet.Cells[index, i];
                             mRange.EntireColumn.AutoFit();
                         }
-
-                        break;
                     }
                 }
             }
@@ -124,7 +77,7 @@ namespace CarImageDownloader.Excel
 
         private void saveExcelFile()
         {
-            mWorksheet.SaveAs(ExcelConstants.FILE_NAME);
+            mWorksheet.SaveAs(Path.Combine(Environment.CurrentDirectory, ExcelConstants.FILE_NAME));
             mWorkbook.Close(true);
             mApplication.Quit();
 
