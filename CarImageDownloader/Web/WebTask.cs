@@ -49,6 +49,7 @@ namespace CarImageDownloader.Web
 
         private void runBrandTasks()
         {
+            //new WebBrandTask(mCarBrandList[10]).Run();
             List<Thread> brandThreadList = new List<Thread>();
             foreach (CarBrand carBrand in mCarBrandList)
             {

@@ -12,6 +12,8 @@ namespace CarImageDownloader.CarData
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public string ImagePath { get; set; }
+        public double PriceMin { get; set; }
+        public double PriceMax { get; set; }
 
         public CarType(CarFactory carFactory)
         {

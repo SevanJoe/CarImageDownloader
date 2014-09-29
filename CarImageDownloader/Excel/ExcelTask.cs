@@ -62,6 +62,8 @@ namespace CarImageDownloader.Excel
                         mWorksheet.Cells[index, 5] = carFactory.Name;
                         mWorksheet.Cells[index, 6] = carFactory.OfficialSite;
                         mWorksheet.Cells[index, 7] = carType.Name;
+                        mWorksheet.Cells[index, 8] = carType.PriceMin;
+                        mWorksheet.Cells[index, 9] = carType.PriceMax;
 
                         for (int i = 1; i <= ExcelConstants.SHEET_HEADERS.Length; ++i)
                         {

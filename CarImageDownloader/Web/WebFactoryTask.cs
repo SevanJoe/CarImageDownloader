@@ -15,10 +15,12 @@ namespace CarImageDownloader.Web
     class WebFactoryTask
     {
         private CarFactory mCarFactory;
+        private List<CarType> mCarTypeList;
 
         public WebFactoryTask(CarFactory carFactory)
         {
             mCarFactory = carFactory;
+            mCarTypeList = new List<CarType>();
         }
 
         public void Run()
@@ -48,6 +50,8 @@ namespace CarImageDownloader.Web
 
         private void addPageType(String pageUrl)
         {
+            mCarTypeList.Clear();
+
             HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + pageUrl);
             HtmlNodeCollection typeNodes = htmlDocument.DocumentNode.SelectNodes(WebConstants.TYPE_NODE);
             if (typeNodes != null)
@@ -62,8 +66,49 @@ namespace CarImageDownloader.Web
                     carType.ImageUrl = imageNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
                     new Thread(new TypeImageDownloadTask(carType).Download).Start();
 
-                    mCarFactory.CarTypeList.Add(carType);
+                    mCarTypeList.Add(carType);
+                    //mCarFactory.CarTypeList.Add(carType);
                 }
+            }
+
+            String priceUrl = pageUrl.Replace(WebConstants.PHOTO, WebConstants.PRICE);
+            setPrice(priceUrl);
+        }
+
+        private void setPrice(String priceUrl)
+        {
+            HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + priceUrl);
+            HtmlNodeCollection typeNodes = htmlDocument.DocumentNode.SelectNodes(WebConstants.TYPE_NODE);
+            if (typeNodes != null)
+            {
+                for (int i = 0; i < typeNodes.Count; ++i)
+                {
+                    HtmlNode typeNode = HtmlNode.CreateNode(typeNodes[i].OuterHtml);
+                    HtmlNode dataNode = HtmlNode.CreateNode(typeNode.SelectSingleNode(WebConstants.TYPE_DATA).OuterHtml);
+                    String priceString = dataNode.SelectSingleNode(WebConstants.LINK_HREF).InnerText.Trim();
+                    int index = priceString.IndexOf('-');
+                    if (index > 0)
+                    {
+                        String minPrice = priceString.Substring(0, index);
+                        String maxPrice = priceString.Substring(index + 1, priceString.Length - 3 - minPrice.Length);
+                        mCarTypeList[i].PriceMin = Convert.ToDouble(minPrice);
+                        mCarTypeList[i].PriceMax = Convert.ToDouble(maxPrice);
+                    } 
+                    else
+                    {
+                        String price = priceString.Substring(0, priceString.Length - 2);
+                        double carPrice;
+                        if (double.TryParse(price, out carPrice))
+                        {
+                            mCarTypeList[i].PriceMin = mCarTypeList[i].PriceMax = carPrice;
+                        }
+                        else
+                        {
+                            mCarTypeList[i].PriceMin = mCarTypeList[i].PriceMax = 0;
+                        }
+                    }
+                }
+                mCarFactory.CarTypeList.AddRange(mCarTypeList);
             }
         }
     }

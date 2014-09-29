@@ -9,6 +9,8 @@ namespace CarImageDownloader.Web
     class WebConstants
     {
         public const string BASE_URL = "http://data.auto.ifeng.com/";
+        public const string PHOTO = "photo";
+        public const string PRICE = "price";
         public const string PHOTO_URL = "frag/priceInc/photo_1.inc";
 
         public const string HREF = "href";
@@ -34,5 +36,6 @@ namespace CarImageDownloader.Web
         public const string TYPE_NODE = "//*[@class=\"md-list-basic\"]";
         public const string TYPE_NAME = "//*[@class=\"md-pic-name\"]";
         public const string TYPE_IMAGE = "//*[@class=\"md-list-img\"]";
+        public const string TYPE_DATA = "//*[@class=\"md-list-data\"]";
     }
 }

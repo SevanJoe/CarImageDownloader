@@ -58,6 +58,7 @@ namespace CarImageDownloader.Web
 
         private void runFactoryTasks()
         {
+            //new WebFactoryTask(mCarBrand.CarFactoryList[0]).Run();
             List<Thread> factoryThreadList = new List<Thread>();
             foreach (CarFactory carFactory in mCarBrand.CarFactoryList)
             {
