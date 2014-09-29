@@ -17,6 +17,8 @@ namespace CarImageDownloader.Web
         public const string IMAGE_SRC = "//img/@src";
         public const string EM = "em";
         public const string SCRIPT_SRC = "//script/@src";
+        public const string PAGE = "//*[@class=\"page\"]";
+        public const string PAGE_NODE = "//*[@class=\"n\"]";
 
         public const string BRAND_NODE = "//*[@class=\"nav-class-l nav-class-close\"]";
         public const string BRAND_ALPHA = "//*[@class=\"l\"]";

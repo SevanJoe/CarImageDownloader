@@ -31,6 +31,24 @@ namespace CarImageDownloader.Web
             HtmlNode officialSiteNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_OFFICIAL_SITE).OuterHtml);
             mCarFactory.OfficialSite = officialSiteNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
 
+            addPageType(mCarFactory.Url);
+
+            HtmlNode pagesNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.PAGE).OuterHtml);
+            HtmlNodeCollection pageNodes = pagesNode.SelectNodes(WebConstants.PAGE_NODE);
+            if (pageNodes != null)
+            {
+                foreach (HtmlNode tempNode in pageNodes)
+                {
+                    HtmlNode pageNode = HtmlNode.CreateNode(tempNode.OuterHtml);
+                    String pageUrl = pageNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
+                    addPageType(pageUrl);
+                }
+            }
+        }
+
+        private void addPageType(String pageUrl)
+        {
+            HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + pageUrl);
             HtmlNodeCollection typeNodes = htmlDocument.DocumentNode.SelectNodes(WebConstants.TYPE_NODE);
             if (typeNodes != null)
             {
