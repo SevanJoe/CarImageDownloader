@@ -28,7 +28,7 @@ namespace CarImageDownloader.Web
             HtmlDocument htmlDocument = new HtmlWeb().Load(WebConstants.BASE_URL + mCarFactory.Url);
             HtmlNode logoNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_LOGO).OuterHtml);
             mCarFactory.LogoUrl = logoNode.SelectSingleNode(WebConstants.IMAGE_SRC).Attributes[WebConstants.SRC].Value;
-            new Thread(new FactoryLogoDownloadTask(mCarFactory).Download).Start();
+            //new Thread(new FactoryLogoDownloadTask(mCarFactory).Download).Start();
 
             HtmlNode officialSiteNode = HtmlNode.CreateNode(htmlDocument.DocumentNode.SelectSingleNode(WebConstants.BRAND_OFFICIAL_SITE).OuterHtml);
             mCarFactory.OfficialSite = officialSiteNode.SelectSingleNode(WebConstants.LINK_HREF).Attributes[WebConstants.HREF].Value;
@@ -67,7 +67,6 @@ namespace CarImageDownloader.Web
                     new Thread(new TypeImageDownloadTask(carType).Download).Start();
 
                     mCarTypeList.Add(carType);
-                    //mCarFactory.CarTypeList.Add(carType);
                 }
             }
 

@@ -11,6 +11,10 @@ namespace CarImageDownloader.Image
     abstract class ImageDownloadTask
     {
         protected const string BASE_FILE_PATH = @"..\..\..\Images\";
+        protected const string BRAND_DIR = "Brand";
+        protected const string FACTORY_DIR = "Factory";
+        protected const string TYPE_DIR = "Type";
+        protected const string PINYIN_DIR = "PinYin";
         protected const string IMAGE_POSTFIX = ".png";
 
         protected string mFilePath;
